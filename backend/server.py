@@ -154,7 +154,7 @@ async def get_user_accounts(user_id: str):
     except Exception as e:
         logger.error(f"Error fetching accounts: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to fetch accounts")
-      @api_router.get("/accounts/{account_id}", response_model=Account)
+@api_router.get("/accounts/{account_id}", response_model=Account)
 async def get_account(account_id: str):
     """Get account by ID."""
     account = await db_service.get_account_by_id(account_id)
