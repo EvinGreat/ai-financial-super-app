@@ -55,7 +55,32 @@ async def health_check():
         "timestamp": datetime.utcnow().isoformat(),
         "message": "Backend is running successfully"
     }
+# Simple in-memory storage for demo (replace with database later)
+users_db = []
 
+@api_router.post("/users")
+async def create_user(user_data: dict):
+    """Create a new user."""
+    try:
+        # Create simple user object
+        new_user = {
+            "id": str(len(users_db) + 1),
+            "email": user_data.get("email"),
+            "full_name": user_data.get("full_name"),
+            "phone": user_data.get("phone", ""),
+            "created_at": datetime.utcnow().isoformat(),
+            "subscription_tier": "free"
+        }
+        
+        # Add to our simple database
+        users_db.append(new_user)
+        
+        logger.info(f"Created new user: {new_user['id']}")
+        return new_user
+        
+    except Exception as e:
+        logger.error(f"Error creating user: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to create user")
 # Include the router in the main app
 app.include_router(api_router)
 
