@@ -503,15 +503,10 @@ function App() {
     <>
       <FinancialDashboard
         user={user}
-        onCreateAccount={() => setShowCreateAccount(true)}
+        onCreateAccount={() => alert('Account creation coming soon!')}
         onRunAnalysis={() => {}}
       />
-      <CreateAccountModal
-        isOpen={showCreateAccount}
-        onClose={() => setShowCreateAccount(false)}
-        onSubmit={handleCreateAccount}
-        loading={loading}
-      />
+   
     </>
   );
 }
