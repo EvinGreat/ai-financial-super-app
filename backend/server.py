@@ -9,6 +9,9 @@ from typing import List, Optional
 # Load environment variables
 load_dotenv()
 
+# Simple in-memory storage for demo
+users_db = []
+
 # Create the main app
 app = FastAPI(
     title="AI Financial Super-App",
@@ -55,8 +58,6 @@ async def health_check():
         "timestamp": datetime.utcnow().isoformat(),
         "message": "Backend is running successfully"
     }
-# Simple in-memory storage for demo (replace with database later)
-users_db = []
 
 @api_router.post("/users")
 async def create_user(user_data: dict):
@@ -81,12 +82,10 @@ async def create_user(user_data: dict):
     except Exception as e:
         logger.error(f"Error creating user: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to create user")
+
 # Include the router in the main app
 app.include_router(api_router)
 
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8001)
-@app.on_event("shutdown")
-async def shutdown_db_client():
-    client.close()
